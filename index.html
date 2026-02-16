@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Estates | Luxury Real Estate</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #1e3a8a; /* Deep Royal Blue */
+            --gold: #d4af37;     /* Luxury Gold */
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --white: #ffffff;
+            --shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Lato', sans-serif; 
+            background-color: var(--light); 
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+        /* --- NAVBAR --- */
+        nav {
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: 0.4s;
+            background: transparent;
+        }
+        
+        nav.scrolled {
+            background: var(--white);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 15px 5%;
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 700; color: var(--white); }
+        nav.scrolled .logo { color: var(--primary); }
+        .logo span { color: var(--gold); }
+
+        .nav-user img {
+            width: 45px; height: 45px; border-radius: 50%; 
+            border: 2px solid var(--gold); object-fit: cover;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1600596542815-e32c2159f828?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; color: var(--white); padding: 0 20px;
+        }
+
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.2rem; margin-bottom: 40px; font-weight: 300; letter-spacing: 1px; }
+
+        /* Search Box */
+        .search-box {
+            background: var(--white); padding: 10px; border-radius: 50px;
+            display: flex; gap: 10px; width: 100%; max-width: 700px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .search-box input {
+            flex: 1; border: none; padding: 15px 20px; outline: none; font-size: 1rem;
+            border-radius: 50px;
+        }
+        
+        .search-btn {
+            background: var(--primary); color: var(--white); padding: 15px 40px;
+            border-radius: 40px; border: none; font-weight: bold; cursor: pointer;
+            transition: 0.3s;
+        }
+        .search-btn:hover { background: var(--gold); }
+
+        /* --- PROPERTIES SECTION --- */
+        .container { padding: 80px 10%; }
+        
+        .section-header { 
+            display: flex; justify-content: space-between; align-items: end; margin-bottom: 50px; flex-wrap: wrap; gap: 20px;
+        }
+        
+        .section-title h2 { font-size: 2.5rem; color: var(--primary); }
+        .section-title p { color: var(--gray); margin-top: 10px; }
+
+        .filter-btns button {
+            background: transparent; border: 2px solid var(--gray);
+            padding: 10px 25px; border-radius: 30px; cursor: pointer;
+            font-weight: 600; margin-left: 10px; transition: 0.3s;
+        }
+        
+        .filter-btns button.active, .filter-btns button:hover {
+            background: var(--primary); border-color: var(--primary); color: var(--white);
+        }
+
+        .property-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .property-card {
+            background: var(--white); border-radius: 15px; overflow: hidden;
+            box-shadow: var(--shadow); transition: 0.3s; cursor: pointer; position: relative;
+        }
+        
+        .property-card:hover { transform: translateY(-10px); }
+
+        .card-img { height: 250px; overflow: hidden; position: relative; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .property-card:hover .card-img img { transform: scale(1.1); }
+        
+        .badge {
+            position: absolute; top: 20px; left: 20px;
+            background: var(--gold); color: var(--white);
+            padding: 5px 15px; font-size: 0.8rem; font-weight: bold; border-radius: 5px;
+            text-transform: uppercase;
+        }
+
+        .card-content { padding: 25px; }
+        .price { font-size: 1.5rem; color: var(--primary); font-weight: 700; font-family: 'Playfair Display', serif; }
+        .location { color: var(--gray); font-size: 0.9rem; margin: 10px 0 20px; display: flex; align-items: center; gap: 5px; }
+        
+        .features {
+            display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 20px;
+        }
+        .feature { display: flex; align-items: center; gap: 8px; color: var(--dark); font-size: 0.9rem; }
+        .feature i { color: var(--gold); }
+
+        /* --- AGENT/FOOTER SECTION --- */
+        .agent-section {
+            background: var(--dark); color: var(--white); padding: 80px 10%;
+            display: flex; align-items: center; justify-content: space-between; gap: 50px;
+            border-radius: 50px 50px 0 0;
+        }
+        .agent-text h2 { color: var(--gold); margin-bottom: 20px; }
+        .agent-text p { color: #94a3b8; margin-bottom: 30px; line-height: 1.8; }
+        .contact-btn {
+            background: var(--white); color: var(--dark); padding: 15px 35px;
+            text-decoration: none; font-weight: bold; border-radius: 30px; transition: 0.3s;
+        }
+        .contact-btn:hover { background: var(--gold); color: var(--white); }
+
+        /* --- MODAL (POPUP) --- */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 2000;
+            display: none; justify-content: center; align-items: center; padding: 20px;
+            opacity: 0; transition: 0.3s;
+        }
+        .modal.active { display: flex; opacity: 1; }
+        
+        .modal-content {
+            background: var(--white); width: 100%; max-width: 800px;
+            border-radius: 15px; overflow: hidden; position: relative;
+            animation: slideUp 0.4s ease;
+        }
+        
+        .modal-close {
+            position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5);
+            color: white; width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10;
+        }
+        
+        .modal-img { height: 300px; width: 100%; object-fit: cover; }
+        .modal-body { padding: 30px; }
+        .modal-body h2 { color: var(--primary); margin-bottom: 10px; }
+
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .section-header { flex-direction: column; align-items: flex-start; }
+            .agent-section { flex-direction: column; text-align: center; }
+            .search-box { flex-direction: column; }
+            .search-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="logo">Elite<span>Estates.</span></div>
+        <div class="nav-user">
+            <img src="https://ik.imagekit.io/IssaAhmad/Screenshot_20260216_100836_Instagram.jpg" alt="Agent">
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Find Your Dream Home</h1>
+        <p>We provide a complete service for the sale, purchase or rental of real estate.</p>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by City, Neighborhood, or Address..." onkeyup="filterProperties()">
+            <button class="search-btn">Search</button>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="section-header">
+            <div class="section-title">
+                <h2>Popular Properties</h2>
+                <p>Explore our finest selection of luxury homes.</p>
+            </div>
+            <div class="filter-btns">
+                <button class="active" onclick="setFilter('all', this)">All</button>
+                <button onclick="setFilter('Sale', this)">For Sale</button>
+                <button onclick="setFilter('Rent', this)">For Rent</button>
+            </div>
+        </div>
+
+        <div class="property-grid" id="grid">
+            </div>
+    </section>
+
+    <section class="agent-section">
+        <div class="agent-text">
+            <h2>Let's Find Your Home Together</h2>
+            <p>I am an experienced digital developer and real estate partner. I build platforms that connect people to their dream homes seamlessly. Contact me for web development or property inquiries.</p>
+            <a href="#" class="contact-btn">Contact Agent</a>
+        </div>
+    </section>
+
+    <div class="modal" id="propertyModal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></div>
+            <img src="" alt="House" class="modal-img" id="m-img">
+            <div class="modal-body">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 id="m-title">Villa Name</h2>
+                    <span class="price" id="m-price">$0</span>
+                </div>
+                <p id="m-loc" style="color:gray; margin-bottom:20px;"><i class="fas fa-map-marker-alt"></i> Location</p>
+                <p style="line-height:1.6; color:#555;">
+                    This stunning modern property offers luxurious living with state-of-the-art amenities. 
+                    Featuring spacious rooms, a private garden, and premium finishes throughout. 
+                    Perfect for families looking for comfort and style.
+                </p>
+                <button class="search-btn" style="width:100%; margin-top:20px;">Request a Tour</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        const properties = [
+            { id: 1, title: "Modern Glass Villa", price: "$2,500,000", type: "Sale", location: "Beverly Hills, CA", beds: 5, baths: 4, area: "4,500", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" },
+            { id: 2, title: "Luxury City Apartment", price: "$4,500 /mo", type: "Rent", location: "Manhattan, NY", beds: 2, baths: 2, area: "1,200", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80" },
+            { id: 3, title: "Cozy Family Home", price: "$850,000", type: "Sale", location: "Austin, TX", beds: 3, baths: 2, area: "2,100", img: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80" },
+            { id: 4, title: "Beachfront Mansion", price: "$5,200,000", type: "Sale", location: "Miami, FL", beds: 6, baths: 5, area: "6,000", img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80" },
+            { id: 5, title: "Modern Loft", price: "$3,200 /mo", type: "Rent", location: "Chicago, IL", beds: 1, baths: 1, area: "900", img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80" },
+            { id: 6, title: "Suburban Retreat", price: "$980,000", type: "Sale", location: "Seattle, WA", beds: 4, baths: 3, area: "3,200", img: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=800&q=80" }
+        ];
+
+        const grid = document.getElementById('grid');
+        let currentFilter = 'all';
+
+        // --- RENDER FUNCTION ---
+        function render(data) {
+            grid.innerHTML = "";
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'property-card';
+                card.onclick = () => openModal(item);
+                card.innerHTML = `
+                    <div class="card-img">
+                        <span class="badge" style="background:${item.type === 'Rent' ? '#10b981' : '#d4af37'}">${item.type}</span>
+                        <img src="${item.img}" alt="${item.title}">
+                    </div>
+                    <div class="card-content">
+                        <h3 style="font-size:1.2rem; margin-bottom:5px;">${item.title}</h3>
+                        <div class="location"><i class="fas fa-map-marker-alt"></i> ${item.location}</div>
+                        <div class="price">${item.price}</div>
+                        <div class="features">
+                            <span class="feature"><i class="fas fa-bed"></i> ${item.beds} Beds</span>
+                            <span class="feature"><i class="fas fa-bath"></i> ${item.baths} Baths</span>
+                            <span class="feature"><i class="fas fa-ruler-combined"></i> ${item.area} sqft</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        render(properties);
+
+        // --- FILTER FUNCTION ---
+        function setFilter(type, btn) {
+            // Button Styles
+            document.querySelectorAll('.filter-btns button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Logic
+            currentFilter = type;
+            if(type === 'all') {
+                render(properties);
+            } else {
+                const filtered = properties.filter(p => p.type === type);
+                render(filtered);
+            }
+        }
+
+        // --- SEARCH FUNCTION ---
+        function filterProperties() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = properties.filter(p => 
+                p.location.toLowerCase().includes(term) || 
+                p.title.toLowerCase().includes(term)
+            );
+            render(filtered);
+        }
+
+        // --- MODAL LOGIC ---
+        const modal = document.getElementById('propertyModal');
+        
+        function openModal(item) {
+            document.getElementById('m-img').src = item.img;
+            document.getElementById('m-title').innerText = item.title;
+            document.getElementById('m-price').innerText = item.price;
+            document.getElementById('m-loc').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${item.location}`;
+            modal.classList.add('active');
+        }
+        
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // --- NAVBAR SCROLL EFFECT ---
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+    </script>
+</body>
+</html>
